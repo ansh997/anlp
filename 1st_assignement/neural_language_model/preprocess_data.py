@@ -6,11 +6,14 @@ import numpy as np
 
 scratch_location = f'/scratch/hmnshpl/anlp_data'
 filename = 'Auguste_Maquet.txt'
+emb_filename = 'glove.6B.300d.txt'
 
-filepath = os.path.join(scratch_location, filename)
+data_filepath = os.path.join(scratch_location, filename)
+emb_filepath = os.path.join(scratch_location, emb_filename)
 
 class TextDataset(Dataset):
-    def __init__(self, file_path, embedding_model, context_size=5, unk_token="<UNK>", embedding_dim=300):
+    def __init__(self, file_path, embedding_model, context_size=5,
+                unk_token="<UNK>", embedding_dim=300):
         """
         Custom Dataset for Language Modeling.
         
@@ -33,7 +36,7 @@ class TextDataset(Dataset):
         
         self.embedding_matrix = self._create_embedding_matrix(embedding_model)
     
-    def _tokenize_text(self, file_path=filepath):
+    def _tokenize_text(self, file_path=data_filepath):
         """
         Tokenizes the text data into words.
         """
