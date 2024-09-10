@@ -1,0 +1,19 @@
+nohup: ignoring input
+Available device:  cuda
+Loading embedding modelLoaded embedding model     
+56803 300
+Initializing modelcontext_size: 5, embedding_dim: 300, hidden_dim: [300, 200]
+Model Initialized    
+Training modelEpoch 1, Train Perplexity: 1447.0487, Val Perplexity: 936.8123
+Epoch 2, Train Perplexity: 1182.4926, Val Perplexity: 891.5228
+Epoch 3, Train Perplexity: 1161.0429, Val Perplexity: 907.6215
+Epoch 4, Train Perplexity: 1153.6451, Val Perplexity: 912.0470
+Epoch 5, Train Perplexity: 1151.9413, Val Perplexity: 897.1869
+Epoch 6, Train Perplexity: 1146.3637, Val Perplexity: 891.3503
+Epoch 7, Train Perplexity: 1145.4757, Val Perplexity: 893.7707
+Epoch 8, Train Perplexity: 1145.5957, Val Perplexity: 884.5859
+Epoch 9, Train Perplexity: 1142.1813, Val Perplexity: 894.6951
+Epoch 10, Train Perplexity: 1141.1459, Val Perplexity: 904.7569
+model training done
+Evaluating model Test Perplexity: 907.563689460403
+Predicted word: the

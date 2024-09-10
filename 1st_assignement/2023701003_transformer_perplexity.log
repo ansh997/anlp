@@ -1,0 +1,131 @@
+Training:   0%|          | 0/10 [00:00<?, ?it/s]Training:  10%|█         | 1/10 [11:40<1:45:02, 700.28s/it]Training:  20%|██        | 2/10 [23:20<1:33:22, 700.35s/it]Training:  30%|███       | 3/10 [35:00<1:21:42, 700.29s/it]Training:  40%|████      | 4/10 [46:40<1:10:01, 700.20s/it]Training:  50%|█████     | 5/10 [58:20<58:19, 699.91s/it]  Training:  60%|██████    | 6/10 [1:09:59<46:38, 699.62s/it]Training:  70%|███████   | 7/10 [1:21:38<34:58, 699.44s/it]Training:  80%|████████  | 8/10 [1:33:17<23:18, 699.37s/it]Training:  90%|█████████ | 9/10 [1:44:56<11:39, 699.33s/it]Training: 100%|██████████| 10/10 [1:56:36<00:00, 699.40s/it]Training: 100%|██████████| 10/10 [1:56:36<00:00, 699.65s/it]
+Epoch 1/10
+Train Loss: 6.5247, Train Perplexity: 681.7884
+Val Loss: 6.4924, Val Perplexity: 660.1365
+Epoch 2/10
+Train Loss: 6.4942, Train Perplexity: 661.3278
+Val Loss: 6.4859, Val Perplexity: 655.8047
+Epoch 3/10
+Train Loss: 6.4884, Train Perplexity: 657.4385
+Val Loss: 6.4797, Val Perplexity: 651.8019
+Epoch 4/10
+Train Loss: 6.4839, Train Perplexity: 654.5212
+Val Loss: 6.4764, Val Perplexity: 649.6365
+Epoch 5/10
+Train Loss: 6.4830, Train Perplexity: 653.9035
+Val Loss: 6.4777, Val Perplexity: 650.4716
+Epoch 6/10
+Train Loss: 6.4818, Train Perplexity: 653.1262
+Val Loss: 6.4753, Val Perplexity: 648.8840
+Epoch 7/10
+Train Loss: 6.4800, Train Perplexity: 651.9401
+Val Loss: 6.4739, Val Perplexity: 648.0222
+Epoch 8/10
+Train Loss: 6.4781, Train Perplexity: 650.7110
+Val Loss: 6.4725, Val Perplexity: 647.0926
+Epoch 9/10
+Train Loss: 6.4774, Train Perplexity: 650.2769
+Val Loss: 6.4725, Val Perplexity: 647.1003
+Epoch 10/10
+Train Loss: 6.4766, Train Perplexity: 649.7499
+Val Loss: 6.4712, Val Perplexity: 646.2514
+Generated Token: the, Perplexity: 3.7275
+Generated Token: i, Perplexity: 22.9641
+Generated Token: the, Perplexity: 4.5271
+Generated Token: of, Perplexity: 12.1274
+Generated Token: you, Perplexity: 25.4326
+Generated Token: of, Perplexity: 10.8958
+Generated Token: to, Perplexity: 10.5872
+Generated Token: and, Perplexity: 11.8865
+Generated Token: that, Perplexity: 32.8290
+Generated Token: the, Perplexity: 4.5952
+Generated Token: am, Perplexity: 37.7623
+Generated Token: in, Perplexity: 30.4594
+Generated Token: he, Perplexity: 30.3646
+Generated Token: of, Perplexity: 15.8937
+Generated Token: in, Perplexity: 30.3356
+Generated Token: i, Perplexity: 27.7692
+Generated Token: the, Perplexity: 4.5271
+Generated Token: on, Perplexity: 100.5812
+Generated Token: the, Perplexity: 2.5352
+Generated Token: the, Perplexity: 4.4795
+Generated Token: and, Perplexity: 11.9173
+Generated Token: the, Perplexity: 4.0212
+Generated Token: he, Perplexity: 28.3385
+Generated Token: on, Perplexity: 101.0352
+Generated Token: you, Perplexity: 30.1796
+Generated Token: to, Perplexity: 8.5103
+Generated Token: of, Perplexity: 12.1362
+Generated Token: it, Perplexity: 53.3306
+Generated Token: said, Perplexity: 45.2552
+Generated Token: the, Perplexity: 4.9606
+Generated Token: he, Perplexity: 28.3387
+Generated Token: i, Perplexity: 32.4556
+Generated Token: in, Perplexity: 31.5481
+Generated Token: you, Perplexity: 36.3397
+Generated Token: to, Perplexity: 8.5103
+Generated Token: the, Perplexity: 3.8049
+Generated Token: the, Perplexity: 4.4795
+Generated Token: and, Perplexity: 11.9173
+Generated Token: to, Perplexity: 9.9603
+Generated Token: i, Perplexity: 23.9628
+Generated Token: the, Perplexity: 4.5270
+Generated Token: that, Perplexity: 34.0360
+Generated Token: the, Perplexity: 4.5952
+Generated Token: not, Perplexity: 118.2407
+Generated Token: the, Perplexity: 5.6479
+Generated Token: to, Perplexity: 10.0938
+Generated Token: he, Perplexity: 29.4690
+Generated Token: the, Perplexity: 4.1672
+Generated Token: said, Perplexity: 43.7460
+Generated Token: the, Perplexity: 4.9606
+Generated Token: that, Perplexity: 34.0360
+Generated Token: the, Perplexity: 4.5952
+Generated Token: have, Perplexity: 83.3752
+Generated Token: the, Perplexity: 4.2968
+Generated Token: to, Perplexity: 10.0938
+Generated Token: and, Perplexity: 11.8865
+Generated Token: it, Perplexity: 62.0956
+Generated Token: you, Perplexity: 23.7028
+Generated Token: that, Perplexity: 30.0815
+Generated Token: the, Perplexity: 4.5952
+Generated Token: and, Perplexity: 11.9173
+Generated Token: a, Perplexity: 18.2616
+Generated Token: who, Perplexity: 106.2416
+Generated Token: on, Perplexity: 93.2887
+Generated Token: the, Perplexity: 2.5352
+Generated Token: and, Perplexity: 11.9173
+Generated Token: the, Perplexity: 4.0212
+Generated Token: a, Perplexity: 19.5599
+Generated Token: to, Perplexity: 9.5228
+Generated Token: of, Perplexity: 12.1363
+Generated Token: and, Perplexity: 11.8979
+Generated Token: the, Perplexity: 4.0212
+Generated Token: i, Perplexity: 22.9643
+Generated Token: his, Perplexity: 37.3638
+Generated Token: the, Perplexity: 5.0320
+Generated Token: to, Perplexity: 10.0938
+Generated Token: and, Perplexity: 11.8865
+Generated Token: to, Perplexity: 9.9603
+Generated Token: of, Perplexity: 12.1363
+Generated Token: dartagnan, Perplexity: 105.6174
+Generated Token: in, Perplexity: 26.3392
+Generated Token: of, Perplexity: 12.6077
+Generated Token: the, Perplexity: 3.7275
+Generated Token: the, Perplexity: 4.4795
+Generated Token: but, Perplexity: 93.3429
+Generated Token: of, Perplexity: 14.1081
+Generated Token: the, Perplexity: 3.7275
+Generated Token: the, Perplexity: 4.4795
+Generated Token: of, Perplexity: 12.1274
+Generated Token: that, Perplexity: 35.4290
+Generated Token: but, Perplexity: 82.0559
+Generated Token: i, Perplexity: 29.4914
+Generated Token: i, Perplexity: 27.1134
+Generated Token: to, Perplexity: 9.8941
+Generated Token: him, Perplexity: 80.2616
+Generated Token: the, Perplexity: 2.6251
+Generated Token: and, Perplexity: 11.9173
+Generated Text:
+the count of the i the of you of to and that the am in he of in i the on the the and the he on you to of it said the he i in you to the the and to i the that the not the to he the said the that the have the to and it you that the and a who on the and the a to of and the i his the to and to of dartagnan in of the the but of the the of that but i i to him the and
+Perplexities: [3.7274696445752262, 22.9641104845292, 4.527061404411177, 12.127413913059192, 25.43261531371781, 10.895846462568901, 10.587248704377116, 11.886508929379552, 32.82896521579931, 4.595186332447878, 37.76230446802417, 30.4594475358793, 30.364596932110274, 15.893748104577467, 30.335628433567248, 27.76915541917869, 4.527056823586156, 100.58122800427523, 2.5351954245275676, 4.479524568281933, 11.91728260757612, 4.021183505090889, 28.338452829834125, 101.03519391941813, 30.179564477812963, 8.51027676748322, 12.136242524243736, 53.33062927393302, 45.255189540081545, 4.960608582582078, 28.33865925595297, 32.455553885032685, 31.548128752015568, 36.33969225537473, 8.510250866431376, 3.804859507535915, 4.479525166299596, 11.917270968008308, 9.960318198296209, 23.962785104079284, 4.527047051190429, 34.03599452300809, 4.595174690464108, 118.2407431797009, 5.647893058688418, 10.093832264771825, 29.468978117014153, 4.167226663399562, 43.74599352908818, 4.960594282010751, 34.03599452300809, 4.595176578349362, 83.37523731549184, 4.296772352878355, 10.093832264771825, 11.886529983132567, 62.09564218573236, 23.702817931656597, 30.08152720460962, 4.595176578349362, 11.917270968008308, 18.261630931933112, 106.2416254246482, 93.28871519848295, 2.535189103526696, 11.917267793584669, 4.021197239318376, 19.559934536795364, 9.522792190667378, 12.136273251072565, 11.897944719805398, 4.021197721222799, 22.964259790024546, 37.36380503151876, 5.032033095756764, 10.093834542089605, 11.886517350871806, 9.960316719982941, 12.136273251072565, 105.61739545273686, 26.33920771844869, 12.607699920014616, 3.727473371248191, 4.479528455399602, 93.34287247523535, 14.10813497746728, 3.7274729571730494, 4.479528455399602, 12.12737884794637, 35.42901202671924, 82.05585618095267, 29.49135624082774, 27.113408061779705, 9.894088848977027, 80.2616339143136, 2.6250572468531246, 11.917277316860657]

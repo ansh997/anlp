@@ -12,6 +12,16 @@ def collate_fn(batch):
     """
     Custom collate function to handle varying context sizes and format the batch correctly.
     """
+    
+    # context_embeddings, context_indices, targets = zip(*batch)
+    
+    # # Stack context embeddings and target indices into tensors
+    # context_embeddings = torch.stack(context_embeddings)
+    # context_indices = torch.stack(context_indices)
+    # targets = torch.stack(targets)
+    
+    # return context_embeddings, context_indices, targets 
+
     contexts, targets = zip(*batch)
     
     # Stack context embeddings and targets into batches

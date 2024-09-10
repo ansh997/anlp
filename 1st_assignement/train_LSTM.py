@@ -20,6 +20,38 @@ filepath = os.path.join(scratch_location, filename)
 glove_file_path = '/scratch/hmnshpl/anlp_data/glove.6B.300d.txt' 
 
 
+def evaluate_and_save_perplexity(model, test_loader, full_dataset, loss_function,
+                                device, output_file=f'{scratch_location}/2023701003_LSTM_perplexity_scores.txt'):
+    model.eval()  # Set the model to evaluation mode
+    total_perplexity = 0.0
+    sentence_count = 0
+    with open(output_file, 'w') as f:
+        for sample_context, target in test_loader:
+            # Move data to the appropriate device (CPU/GPU)
+            sample_context, target = sample_context.to(device), target.to(device)
+            
+            # Get the sentence from context indices
+            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0)])
+            
+            # Forward pass through the model to get predictions
+            prediction = model(sample_context)
+            
+            # Compute the loss and perplexity for the current sentence
+            loss = loss_function(prediction, target)
+            perplexity = torch.exp(loss).item()
+            
+            # Write sentence and perplexity to the file
+            f.write(f"{sentence}\t{perplexity:.4f}\n")
+            
+            total_perplexity += perplexity
+            sentence_count += 1
+        
+        # Calculate average perplexity
+        average_perplexity = total_perplexity / sentence_count
+        f.write(f"\nAverage perplexity: {average_perplexity:.4f}\n")
+    
+    print(f"Perplexity scores written to {output_file}")
+    return average_perplexity
 
 
 def main(args):
@@ -69,6 +101,10 @@ def main(args):
     predicted_word_idx = model.predict(sample_context, args.device)
     predicted_word = full_dataset.idx_to_word[predicted_word_idx]
     print(f'Predicted word: {predicted_word}')
+    
+    output_file = f'{scratch_location}/2023701003_LSTM_perplexity_scores.txt'
+    average_perplexity = evaluate_and_save_perplexity(model, test_loader, full_dataset, loss_function, args.device, output_file)
+    print(f'Test Average Perplexity: {average_perplexity:.4f}')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train an LSTM-based Language Model')

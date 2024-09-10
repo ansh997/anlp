@@ -3,6 +3,7 @@ import torch
 from torch.utils.data import random_split
 from collections import Counter
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
@@ -27,6 +28,7 @@ embedding_dim = 300
 # print("Best Hyperparameters:", best_params)
 
 if __name__=='__main__':
+    print('started')
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print('Available device: ', device)
 
@@ -74,3 +76,33 @@ if __name__=='__main__':
     predicted_word_idx = prediction.argmax().item()
     predicted_word = full_dataset.idx_to_word[predicted_word_idx]
     print(f"Predicted word: {predicted_word}")
+    
+    sentence_perplexities = []
+    output_file = f'{scratch_location}/2023701003_NNLM_perplexity_scores.txt'
+
+    with open(output_file, 'w') as f:
+        total_perplexity = 0.0
+        for i, (sample_context, target) in tqdm(enumerate(test_loader), desc='Running'):
+            
+            word_indices = sample_context.argmax(dim=-1)
+            
+            # Get the sentence from context indices
+            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0)])
+
+            # Predict the word distribution and compute perplexity
+            prediction = model.predict(sample_context)
+            perplexity = model.compute_perplexity(prediction, target)
+
+            # Log sentence perplexity
+            f.write(f"{sentence}\t{perplexity.item()}\n")
+
+            sentence_perplexities.append(perplexity.item())
+            total_perplexity += perplexity.item()
+
+        # Calculate and log average perplexity
+        average_perplexity = total_perplexity / len(test_loader)
+        f.write(f"\nAverage perplexity: {average_perplexity}\n")
+
+    print(f"Perplexity scores written to {output_file}")
+    
+    

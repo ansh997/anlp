@@ -1,0 +1,11 @@
+nohup: ignoring input
+Loading embedding modelLoaded embedding model     
+Training:   0%|          | 0/3 [00:00<?, ?it/s]Training:  33%|███▎      | 1/3 [03:13<06:26, 193.35s/it]Training:  67%|██████▋   | 2/3 [06:23<03:11, 191.66s/it]Training: 100%|██████████| 3/3 [09:34<00:00, 191.01s/it]Training: 100%|██████████| 3/3 [09:34<00:00, 191.36s/it]
+Epoch 1, Training Loss: 6.8054
+Epoch 1, Validation Loss: 6.2961, Perplexity: 542.4460
+Epoch 2, Training Loss: 6.4080
+Epoch 2, Validation Loss: 6.1715, Perplexity: 478.9119
+Epoch 3, Training Loss: 6.3126
+Epoch 3, Validation Loss: 6.1144, Perplexity: 452.3151
+Test Perplexity: 453.8084
+Predicted word: and

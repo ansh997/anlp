@@ -112,4 +112,5 @@ class TextDataset(Dataset):
         # Retrieve the embeddings for the context
         context_embeddings = torch.cat([self.embedding_matrix[idx].unsqueeze(0) for idx in context_indices], dim=0)
         
+        # return context_embeddings, torch.tensor(context_indices, dtype=torch.long), torch.tensor(target_index, dtype=torch.long)
         return context_embeddings, target_index
