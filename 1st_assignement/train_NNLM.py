@@ -1,15 +1,9 @@
 import os
 import torch
 from torch.utils.data import random_split
-from collections import Counter
-from sklearn.model_selection import train_test_split
 from tqdm import tqdm
-import numpy as np
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from neural_language_model import TextDataset, create_dataloaders, ft_embedding, NLM  # some issue with this
+from neural_language_model import TextDataset, ft_embedding, NLM
 
 scratch_location = '/scratch/hmnshpl/anlp_data'
 filename = 'Auguste_Maquet.txt'
@@ -17,15 +11,9 @@ filepath = os.path.join(scratch_location, filename)
 glove_file_path = '/scratch/hmnshpl/anlp_data/glove.6B.300d.txt' 
 embedding_dim = 300
 
-# Usage example:
-# train_dataset, val_dataset, test_dataset = ...  # Your data loading code here
-# vocab_size = ...  # Size of your vocabulary
-# embedding_dim = ...  # Dimension of your embeddings
+# nohup python train_NNLM.py > 2023701003_NNLM_full_output.log 
+# nohup python -u train_NNLM.py > 2023701003_NNLM_full_output.log &
 
-# results = NNLM.hyperparameter_tuning(train_dataset, val_dataset, test_dataset, vocab_size, embedding_dim)
-# NNLM.plot_results(results)
-# best_params = NNLM.find_best_hyperparameters(results)
-# print("Best Hyperparameters:", best_params)
 
 if __name__=='__main__':
     print('started')
@@ -84,17 +72,28 @@ if __name__=='__main__':
         total_perplexity = 0.0
         for i, (sample_context, target) in tqdm(enumerate(test_loader), desc='Running'):
             
-            word_indices = sample_context.argmax(dim=-1)
+            # print(f"sample_context: {sample_context}")
+            # print(f"Type: {type(sample_context)}")
+            # print(f"Shape: {sample_context.shape}")
+            # print(f"Device: {sample_context.device}")
             
-            # Get the sentence from context indices
-            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0)])
+            # Get the indices from the sample_context tensor
+            indices = sample_context.squeeze(0).argmax(dim=-1)
+
+            # Convert indices to words
+            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in indices])
+            
+            # # Get the sentence from context indices
+            # sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0)])
 
             # Predict the word distribution and compute perplexity
             prediction = model.predict(sample_context)
-            perplexity = model.compute_perplexity(prediction, target)
+            perplexity = model.compute_perplexity(prediction.to(sample_context.device),
+                                                target.to(sample_context.device))
 
             # Log sentence perplexity
             f.write(f"{sentence}\t{perplexity.item()}\n")
+            print(f"{sentence}\t{perplexity.item()}\n")
 
             sentence_perplexities.append(perplexity.item())
             total_perplexity += perplexity.item()

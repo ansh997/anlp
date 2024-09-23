@@ -116,6 +116,17 @@ class NNLM(nn.Module):
                 total_loss += loss_function(log_probs, target_indices).item()
 
         return np.exp(total_loss / len(test_dataset))
+    
+    def compute_perplexity(self, prediction, target):
+        if not torch.is_floating_point(prediction):
+            raise ValueError("Predictions should be in log-probability space")
+        
+        nll = nn.functional.nll_loss(prediction, target, reduction='mean')
+        
+        # Compute perplexity
+        perplexity = torch.exp(nll)
+        
+        return perplexity
 
     @staticmethod
     def hyperparameter_tuning(train_dataset, val_dataset, test_dataset, vocab_size, embedding_dim):

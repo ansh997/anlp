@@ -27,14 +27,23 @@ def evaluate_and_save_perplexity(model, test_loader, full_dataset, loss_function
     sentence_count = 0
     with open(output_file, 'w') as f:
         for sample_context, target in test_loader:
+                        
             # Move data to the appropriate device (CPU/GPU)
             sample_context, target = sample_context.to(device), target.to(device)
             
+            # Get the indices from the sample_context tensor
+            indices = sample_context.squeeze(0).argmax(dim=-1)
+
+            # Convert indices to words
+            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in indices])
+            
             # Get the sentence from context indices
-            sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0)])
+            # sentence = ' '.join([full_dataset.idx_to_word[idx.item()] for idx in sample_context.squeeze(0).argmax(dim=-1)])
             
             # Forward pass through the model to get predictions
-            prediction = model(sample_context)
+            hidden = model.init_hidden(1, device)
+            prediction, hidden = model(sample_context, hidden)
+            # prediction = model.predict(sample_context, device) # model(sample_context)
             
             # Compute the loss and perplexity for the current sentence
             loss = loss_function(prediction, target)
@@ -42,6 +51,7 @@ def evaluate_and_save_perplexity(model, test_loader, full_dataset, loss_function
             
             # Write sentence and perplexity to the file
             f.write(f"{sentence}\t{perplexity:.4f}\n")
+            print(f"{sentence}\t{perplexity:.4f}\n")
             
             total_perplexity += perplexity
             sentence_count += 1
@@ -79,7 +89,7 @@ def main(args):
     
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
     
     # Initialize model
     model = LSTMLanguageModel(embedding_dim, args.hidden_dim, vocab_size, args.num_layers)
@@ -114,7 +124,7 @@ if __name__ == "__main__":
     parser.add_argument('--hidden_dim', type=int, default=300, help='Hidden dimension of LSTM')
     parser.add_argument('--num_layers', type=int, default=1, help='Number of LSTM layers')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate for the optimizer')
-    parser.add_argument('--num_epochs', type=int, default=3, help='Number of epochs for training')
+    parser.add_argument('--num_epochs', type=int, default=10, help='Number of epochs for training')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu', help='Device to run the model on (cuda or cpu)')
     
     args = parser.parse_args()
