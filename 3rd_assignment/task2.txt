@@ -1,0 +1,95 @@
+Training Epoch 1: 100%|██████████| 250/250 [00:43<00:00,  5.69it/s, loss=3.4537]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 14.11it/s]
+Epoch 1
+Average Training Loss: 3.4537
+Validation Loss: 2.9741
+--------------------------------------------------
+Training Epoch 2: 100%|██████████| 250/250 [00:43<00:00,  5.71it/s, loss=2.9680]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.93it/s]
+Epoch 2
+Average Training Loss: 2.9680
+Validation Loss: 2.7176
+--------------------------------------------------
+Training Epoch 3: 100%|██████████| 250/250 [00:44<00:00,  5.68it/s, loss=2.9231]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.86it/s]
+Epoch 3
+Average Training Loss: 2.9231
+Validation Loss: 2.6937
+--------------------------------------------------
+Training Epoch 4: 100%|██████████| 250/250 [00:44<00:00,  5.68it/s, loss=2.8964]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.82it/s]
+Epoch 4
+Average Training Loss: 2.8964
+Validation Loss: 2.6797
+--------------------------------------------------
+Training Epoch 5: 100%|██████████| 250/250 [00:44<00:00,  5.65it/s, loss=2.8757]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.80it/s]
+Epoch 5
+Average Training Loss: 2.8757
+Validation Loss: 2.6733
+--------------------------------------------------
+Training Epoch 6: 100%|██████████| 250/250 [00:44<00:00,  5.65it/s, loss=2.8584]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.85it/s]
+Epoch 6
+Average Training Loss: 2.8584
+Validation Loss: 2.6701
+--------------------------------------------------
+Training Epoch 7: 100%|██████████| 250/250 [00:44<00:00,  5.64it/s, loss=2.8453]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.79it/s]
+Epoch 7
+Average Training Loss: 2.8453
+Validation Loss: 2.6688
+--------------------------------------------------
+Training Epoch 8: 100%|██████████| 250/250 [00:44<00:00,  5.63it/s, loss=2.8352]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.82it/s]
+Epoch 8
+Average Training Loss: 2.8352
+Validation Loss: 2.6676
+--------------------------------------------------
+Training Epoch 9: 100%|██████████| 250/250 [00:44<00:00,  5.66it/s, loss=2.8265]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.76it/s]
+Epoch 9
+Average Training Loss: 2.8265
+Validation Loss: 2.6677
+--------------------------------------------------
+Training Epoch 10: 100%|██████████| 250/250 [00:44<00:00,  5.64it/s, loss=2.8201]
+Validating: 100%|██████████| 25/25 [00:01<00:00, 13.81it/s]
+Epoch 10
+Average Training Loss: 2.8201
+Validation Loss: 2.6672
+--------------------------------------------------
+
+Training completed!
+Best validation loss: 2.6672
+
+Loss history:
+Epoch 1:
+Training Loss: 3.4537
+Validation Loss: 2.9741
+Epoch 2:
+Training Loss: 2.9680
+Validation Loss: 2.7176
+Epoch 3:
+Training Loss: 2.9231
+Validation Loss: 2.6937
+Epoch 4:
+Training Loss: 2.8964
+Validation Loss: 2.6797
+Epoch 5:
+Training Loss: 2.8757
+Validation Loss: 2.6733
+Epoch 6:
+Training Loss: 2.8584
+Validation Loss: 2.6701
+Epoch 7:
+Training Loss: 2.8453
+Validation Loss: 2.6688
+Epoch 8:
+Training Loss: 2.8352
+Validation Loss: 2.6676
+Epoch 9:
+Training Loss: 2.8265
+Validation Loss: 2.6677
+Epoch 10:
+Training Loss: 2.8201
+Validation Loss: 2.6672
