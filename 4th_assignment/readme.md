@@ -245,3 +245,7 @@ NF4 MODEL:
 	Inference Latency: 1.4796 seconds
 	Perplexity: 3.17
 
+
+
+![Quantization Performance Comparison](performance_comparison.png)
+![Quantization Metrics](quantization_metrics.png)
