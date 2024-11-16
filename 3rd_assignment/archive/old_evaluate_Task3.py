@@ -3,15 +3,14 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer, logging
 from datasets import load_dataset
 from rouge_score import rouge_scorer
 from tqdm import tqdm
-from peft import PeftModel, PeftConfig
 import warnings
-import os
 
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 logging.set_verbosity_error()
 
 scratch_dir = "/scratch/hmnshpl/anlp_data"
+
 
 def evaluate_model(model_path, num_samples=None):
     # Force CPU usage
@@ -22,33 +21,35 @@ def evaluate_model(model_path, num_samples=None):
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
     tokenizer.pad_token = tokenizer.eos_token
     
-    # Load the base model
-    base_model = GPT2LMHeadModel.from_pretrained('gpt2')
+    model = GPT2LMHeadModel.from_pretrained('gpt2')
+    checkpoint = torch.load(model_path, map_location=device)
     
-    # Load the LoRA adapter config and model
-    print(f"Loading LoRA adapter from {model_path}...")
-    config = PeftConfig.from_pretrained(model_path)
-    model = PeftModel.from_pretrained(base_model, model_path)
+    if 'model_state_dict' in checkpoint:
+        model.load_state_dict(checkpoint['model_state_dict'])
+    else:
+        model.load_state_dict(checkpoint)
     
     model = model.to(device)
     model.eval()  # Set to evaluation mode
     
     # Load dataset
     print("Loading dataset...")
-    dataset = load_dataset('cnn_dailymail', '3.0.0', cache_dir=scratch_dir)
+    dataset = load_dataset('cnn_dailymail',
+                        '3.0.0', cache_dir=scratch_dir)
     
     num_samples = int(len(dataset['test'])*0.1) if num_samples is None else num_samples
-    print(f"Evaluating on {num_samples} samples")
     
+    print(num_samples)
+        
     test_data = list(dataset['test'])[:num_samples]
     
     # Setup ROUGE scorer
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
     
-    # Track scores and loss
+    # Track scores
     all_scores = []
+    
     total_loss = 0.0
-    num_loss_samples = 0
     
     # Evaluate
     print("Generating summaries and calculating scores...")
@@ -58,40 +59,20 @@ def evaluate_model(model_path, num_samples=None):
             article = item['article'][:1024]  # Limit input length
             reference_summary = item['highlights']
             
-            # Prepare input for loss calculation
-            full_text = f"Summarize: {article} Summary: {reference_summary}"
-            inputs = tokenizer(
-                full_text,
-                return_tensors="pt",
-                truncation=True,
-                max_length=512
-            ).to(device)
-            
-            # Calculate loss
-            with torch.no_grad():
-                outputs = model(
-                    input_ids=inputs['input_ids'],
-                    attention_mask=inputs['attention_mask'],
-                    labels=inputs['input_ids']
-                )
-                loss = outputs.loss
-                total_loss += loss.item()
-                num_loss_samples += 1
-            
             # Generate summary
-            gen_inputs = tokenizer(
+            inputs = tokenizer(
                 "Summarize: " + article, 
                 return_tensors="pt",
                 truncation=True,
                 max_length=512
             ).to(device)
             
-            with torch.no_grad():
+            with torch.no_grad():  # Disable gradient calculation
                 outputs = model.generate(
-                    gen_inputs['input_ids'],
-                    attention_mask=gen_inputs['attention_mask'],
+                    inputs['input_ids'],
+                    attention_mask=inputs['attention_mask'].to(device),
                     max_new_tokens=150,
-                    num_beams=2,
+                    num_beams=2,  # Reduced beam size
                     length_penalty=1.5,
                     early_stopping=True,
                     pad_token_id=tokenizer.eos_token_id,
@@ -111,10 +92,13 @@ def evaluate_model(model_path, num_samples=None):
                 'rougeL': scores['rougeL'].fmeasure
             })
             
-            # Print example (uncomment for debugging)
+            # Print example
             # print(f"\nExample {len(all_scores)}:")
             # print(f"Generated: {generated_summary[:100]}...")
             # print(f"Reference: {reference_summary[:100]}...")
+            # print(f"ROUGE scores: R1={scores['rouge1'].fmeasure:.3f}, "
+            #     f"R2={scores['rouge2'].fmeasure:.3f}, "
+            #     f"RL={scores['rougeL'].fmeasure:.3f}")
             
             # Clear memory
             torch.cuda.empty_cache() if torch.cuda.is_available() else None
@@ -130,27 +114,14 @@ def evaluate_model(model_path, num_samples=None):
             for metric in ['rouge1', 'rouge2', 'rougeL']
         }
         
-        avg_loss = total_loss / num_loss_samples if num_loss_samples > 0 else float('inf')
-        
-        print("\nEvaluation Results:")
-        print(f"Test Loss: {avg_loss:.4f}")
-        print("\nROUGE Scores:")
-        print(f"ROUGE-1: {avg_scores['rouge1']:.4f}")
-        print(f"ROUGE-2: {avg_scores['rouge2']:.4f}")
-        print(f"ROUGE-L: {avg_scores['rougeL']:.4f}")
-        
-        # Save results to file
-        results_file = os.path.join(os.path.dirname(model_path), "evaluation_results.txt")
-        with open(results_file, "w") as f:
-            f.write("Evaluation Results:\n")
-            f.write(f"Test Loss: {avg_loss:.4f}\n")
-            f.write("\nROUGE Scores:\n")
-            f.write(f"ROUGE-1: {avg_scores['rouge1']:.4f}\n")
-            f.write(f"ROUGE-2: {avg_scores['rouge2']:.4f}\n")
-            f.write(f"ROUGE-L: {avg_scores['rougeL']:.4f}\n")
+        print("\nAverage ROUGE scores:")
+        print(f"ROUGE-1: {avg_scores['rouge1']:.3f}")
+        print(f"ROUGE-2: {avg_scores['rouge2']:.3f}")
+        print(f"ROUGE-L: {avg_scores['rougeL']:.3f}")
+        print(f"Average Loss: {total_loss/len(all_scores):.3f}")
     else:
         print("No scores were calculated successfully.")
 
 if __name__ == "__main__":
-    model_path = './best_model.pt'
+    model_path = './finetune_best_model.pt'  # Adjust this path
     evaluate_model(model_path)

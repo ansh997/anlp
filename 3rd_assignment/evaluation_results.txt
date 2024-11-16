@@ -1,0 +1,7 @@
+Evaluation Results:
+Test Loss: 3.1044
+
+ROUGE Scores:
+ROUGE-1: 0.1502
+ROUGE-2: 0.0667
+ROUGE-L: 0.1042

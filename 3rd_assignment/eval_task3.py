@@ -11,7 +11,6 @@ logging.set_verbosity_error()
 
 scratch_dir = "/scratch/hmnshpl/anlp_data"
 
-
 def evaluate_model(model_path, num_samples=None):
     # Force CPU usage
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -34,20 +33,20 @@ def evaluate_model(model_path, num_samples=None):
     
     # Load dataset
     print("Loading dataset...")
-    dataset = load_dataset('cnn_dailymail',
-                        '3.0.0', cache_dir=scratch_dir)
+    dataset = load_dataset('cnn_dailymail', '3.0.0', cache_dir=scratch_dir)
     
     num_samples = int(len(dataset['test'])*0.1) if num_samples is None else num_samples
+    print(f"Evaluating on {num_samples} samples")
     
-    print(num_samples)
-        
     test_data = list(dataset['test'])[:num_samples]
     
     # Setup ROUGE scorer
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
     
-    # Track scores
+    # Track scores and loss
     all_scores = []
+    total_loss = 0.0
+    num_loss_samples = 0
     
     # Evaluate
     print("Generating summaries and calculating scores...")
@@ -57,20 +56,40 @@ def evaluate_model(model_path, num_samples=None):
             article = item['article'][:1024]  # Limit input length
             reference_summary = item['highlights']
             
-            # Generate summary
+            # Prepare input for loss calculation
+            full_text = f"Summarize: {article} Summary: {reference_summary}"
             inputs = tokenizer(
+                full_text,
+                return_tensors="pt",
+                truncation=True,
+                max_length=512
+            ).to(device)
+            
+            # Calculate loss
+            with torch.no_grad():
+                outputs = model(
+                    input_ids=inputs['input_ids'],
+                    attention_mask=inputs['attention_mask'],
+                    labels=inputs['input_ids']
+                )
+                loss = outputs.loss
+                total_loss += loss.item()
+                num_loss_samples += 1
+            
+            # Generate summary
+            gen_inputs = tokenizer(
                 "Summarize: " + article, 
                 return_tensors="pt",
                 truncation=True,
                 max_length=512
             ).to(device)
             
-            with torch.no_grad():  # Disable gradient calculation
+            with torch.no_grad():
                 outputs = model.generate(
-                    inputs['input_ids'],
-                    attention_mask=inputs['attention_mask'].to(device),
+                    gen_inputs['input_ids'],
+                    attention_mask=gen_inputs['attention_mask'],
                     max_new_tokens=150,
-                    num_beams=2,  # Reduced beam size
+                    num_beams=2,
                     length_penalty=1.5,
                     early_stopping=True,
                     pad_token_id=tokenizer.eos_token_id,
@@ -90,14 +109,6 @@ def evaluate_model(model_path, num_samples=None):
                 'rougeL': scores['rougeL'].fmeasure
             })
             
-            # Print example
-            # print(f"\nExample {len(all_scores)}:")
-            # print(f"Generated: {generated_summary[:100]}...")
-            # print(f"Reference: {reference_summary[:100]}...")
-            # print(f"ROUGE scores: R1={scores['rouge1'].fmeasure:.3f}, "
-            #     f"R2={scores['rouge2'].fmeasure:.3f}, "
-            #     f"RL={scores['rougeL'].fmeasure:.3f}")
-            
             # Clear memory
             torch.cuda.empty_cache() if torch.cuda.is_available() else None
             
@@ -112,10 +123,14 @@ def evaluate_model(model_path, num_samples=None):
             for metric in ['rouge1', 'rouge2', 'rougeL']
         }
         
-        print("\nAverage ROUGE scores:")
-        print(f"ROUGE-1: {avg_scores['rouge1']:.3f}")
-        print(f"ROUGE-2: {avg_scores['rouge2']:.3f}")
-        print(f"ROUGE-L: {avg_scores['rougeL']:.3f}")
+        avg_loss = total_loss / num_loss_samples if num_loss_samples > 0 else float('inf')
+        
+        print("\nEvaluation Results:")
+        print(f"Test Loss: {avg_loss:.4f}")
+        print("\nROUGE Scores:")
+        print(f"ROUGE-1: {avg_scores['rouge1']:.4f}")
+        print(f"ROUGE-2: {avg_scores['rouge2']:.4f}")
+        print(f"ROUGE-L: {avg_scores['rougeL']:.4f}")
     else:
         print("No scores were calculated successfully.")
 
